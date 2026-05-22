@@ -10,7 +10,8 @@ from utils.pdf_parser import extract_text_from_pdf
 from utils.preprocessing import preprocess_text, extract_skills
 from utils.similarity import (
     calculate_similarity, get_matching_skills,
-    get_skill_score, get_combined_score, get_recommendations, detect_language_gaps
+    get_skill_score, get_combined_score, get_recommendations,
+    detect_language_gaps, get_radar_data
 )
 
 app = Flask(__name__)
@@ -97,6 +98,9 @@ def analyze():
         # Step 7: Detect cross-language pairs
         language_gaps = detect_language_gaps(jd_skills, resume_skills, job_description, resume_text)
 
+        # Step 8: Radar chart data per kategori
+        radar_data = get_radar_data(jd_skills, resume_skills)
+
         result = {
             'combined_score': combined_score,
             'similarity_score': similarity_score,
@@ -105,6 +109,7 @@ def analyze():
             'missing_skills': sorted(list(missing_skills)),
             'recommendations': recommendations,
             'language_gaps': language_gaps,
+            'radar_data': radar_data,
             'jd_word_count': len(processed_jd.split()),
             'resume_word_count': len(processed_resume.split()),
             'jd_skills_count': len(jd_skills),

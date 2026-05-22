@@ -6,9 +6,19 @@ Fungsi: Membersihkan dan memproses teks untuk NLP
 import re
 import nltk
 import ssl
+import os
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
+
+nltk.data.path.append('/tmp/nltk_data')
+
+for pkg in ['stopwords', 'punkt', 'wordnet']:
+    try:
+        nltk.data.find(f'tokenizers/{pkg}')
+    except LookupError:
+        nltk.download(pkg, download_dir='/tmp/nltk_data')
+        
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:

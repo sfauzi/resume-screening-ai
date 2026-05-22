@@ -5,8 +5,30 @@ Fungsi: Membersihkan dan memproses teks untuk NLP
 
 import re
 import nltk
+import ssl
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+# Download semua resource yang diperlukan dengan error handling
+def download_nltk_resources():
+    """Download NLTK resources if not already available"""
+    resources = ['punkt', 'punkt_tab', 'stopwords']
+    for resource in resources:
+        try:
+            nltk.data.find(f'tokenizers/{resource}')
+        except LookupError:
+            print(f"Downloading NLTK resource: {resource}")
+            nltk.download(resource, quiet=True)
+
+# Panggil fungsi download saat module diimport
+download_nltk_resources()
 
 # Download NLTK data (hanya sekali)
 try:

@@ -1,0 +1,83 @@
+/* Custom styles for Resume Screening AI */
+
+/* Progress ring animation */
+.progress-ring {
+    transition: stroke-dashoffset 1s ease-in-out;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+/* Upload area hover effect */
+#uploadArea {
+    transition: all 0.3s ease;
+}
+
+#uploadArea:hover {
+    border-color: #6366f1;
+    background-color: #f8fafc;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c7d2fe;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #818cf8;
+}
+
+/* Print styles */
+@media print {
+    nav, 
+    .action-buttons,
+    button {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+    }
+    
+    .shadow-xl {
+        box-shadow: none !important;
+        border: 1px solid #e5e7eb;
+    }
+}
+
+/* Button loading state */
+.btn-loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.btn-loading::after {
+    content: " ...";
+}
+
+/* Skill tag animations */
+.skill-tag {
+    transition: transform 0.2s ease;
+}
+
+.skill-tag:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

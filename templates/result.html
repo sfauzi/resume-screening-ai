@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - Resume Screening AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span class="text-xl font-bold text-gray-800">Resume Screening AI</span>
+                </a>
+                <a href="/" class="text-gray-600 hover:text-indigo-600 transition">New Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Analysis Results</h1>
+            <p class="text-gray-600 mt-2">Here's how your CV matches the job requirements</p>
+        </div>
+
+        <!-- Score Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
+            <div class="text-center">
+                <div class="text-sm text-gray-500 uppercase tracking-wide mb-2">Match Score</div>
+                <div class="relative inline-flex items-center justify-center">
+                    <svg class="w-48 h-48">
+                        <circle class="text-gray-200" stroke-width="12" stroke="currentColor" fill="transparent" r="88" cx="96" cy="96"/>
+                        <circle class="text-indigo-600 progress-ring" stroke-width="12" stroke="currentColor" fill="transparent" r="88" cx="96" cy="96"
+                                stroke-dasharray="553" stroke-dashoffset="553" data-score="{{ result.score }}"/>
+                    </svg>
+                    <div class="absolute text-center">
+                        <div class="text-5xl font-bold text-gray-800">{{ "%.1f"|format(result.score) }}%</div>
+                        <div class="text-sm text-gray-500 mt-1">Similarity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Analysis -->
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <!-- Matching Skills -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <span class="text-2xl mr-2">✅</span>
+                    <h2 class="text-xl font-semibold text-gray-800">Matching Skills</h2>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    {% if result.matching_skills %}
+                        {% for skill in result.matching_skills %}
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                                {{ skill }}
+                            </span>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-gray-500">No matching skills found</p>
+                    {% endif %}
+                </div>
+                <div class="mt-4 pt-3 border-t border-gray-100">
+                    <p class="text-sm text-gray-600">
+                        Found <strong>{{ result.matching_skills|length }}</strong> matching skills
+                    </p>
+                </div>
+            </div>
+
+            <!-- Missing Skills -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <span class="text-2xl mr-2">⚠️</span>
+                    <h2 class="text-xl font-semibold text-gray-800">Missing Skills</h2>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    {% if result.missing_skills %}
+                        {% for skill in result.missing_skills %}
+                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
+                                {{ skill }}
+                            </span>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-green-600">✨ Perfect! No missing skills!</p>
+                    {% endif %}
+                </div>
+                <div class="mt-4 pt-3 border-t border-gray-100">
+                    <p class="text-sm text-gray-600">
+                        Missing <strong>{{ result.missing_skills|length }}</strong> skills from requirements
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-2xl shadow-xl p-6 mb-6 border border-indigo-100">
+            <div class="flex items-start">
+                <div class="text-3xl mr-3">💡</div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2">AI Recommendation</h2>
+                    <p class="text-gray-700">{{ result.recommendation }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="bg-white rounded-2xl shadow-xl p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">📊 Analysis Statistics</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                    <div class="text-2xl font-bold text-indigo-600">{{ result.jd_word_count }}</div>
+                    <div class="text-sm text-gray-600">Words in Job Description</div>
+                </div>
+                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                    <div class="text-2xl font-bold text-indigo-600">{{ result.resume_word_count }}</div>
+                    <div class="text-sm text-gray-600">Words in Resume</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex gap-4 justify-center">
+            <a href="/" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md">
+                🔄 Analyze Another CV
+            </a>
+            <button onclick="window.print()" class="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition shadow-md">
+                🖨️ Print Results
+            </button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Animate the progress ring
+        const ring = document.querySelector('.progress-ring');
+        if (ring) {
+            const score = ring.dataset.score;
+            const radius = 88;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (score / 100) * circumference;
+            ring.style.strokeDasharray = `${circumference} ${circumference}`;
+            ring.style.strokeDashoffset = offset;
+        }
+    </script>
+</body>
+</html>

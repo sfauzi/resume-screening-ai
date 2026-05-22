@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
 
     <nav class="bg-white shadow-lg">
@@ -16,7 +18,7 @@
                 <a href="/" class="flex items-center space-x-2">
                     <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <span class="text-xl font-bold text-gray-800">Resume Screening AI</span>
                 </a>
@@ -37,14 +39,11 @@
                 <div class="text-sm text-gray-500 uppercase tracking-widest mb-2">Overall Match Score</div>
                 <div class="relative inline-flex items-center justify-center mb-4">
                     <svg class="w-48 h-48" viewBox="0 0 200 200">
-                        <circle stroke="#e5e7eb" stroke-width="14" fill="transparent" r="88" cx="100" cy="100"/>
-                        <circle class="progress-ring" stroke="#4f46e5" stroke-width="14" fill="transparent"
-                                r="88" cx="100" cy="100"
-                                stroke-linecap="round"
-                                stroke-dasharray="553"
-                                stroke-dashoffset="553"
-                                data-score="{{ result.combined_score }}"
-                                style="transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1s ease;"/>
+                        <circle stroke="#e5e7eb" stroke-width="14" fill="transparent" r="88" cx="100" cy="100" />
+                        <circle class="progress-ring" stroke="#4f46e5" stroke-width="14" fill="transparent" r="88"
+                            cx="100" cy="100" stroke-linecap="round" stroke-dasharray="553" stroke-dashoffset="553"
+                            data-score="{{ result.combined_score }}"
+                            style="transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1s ease;" />
                     </svg>
                     <div class="absolute text-center">
                         <div class="text-5xl font-bold text-gray-800">{{ "%.0f"|format(result.combined_score) }}%</div>
@@ -110,8 +109,7 @@
                         <div class="h-2 rounded-full transition-all duration-700
                             {% if cat.score >= 80 %}bg-green-500
                             {% elif cat.score >= 50 %}bg-yellow-400
-                            {% else %}bg-red-400{% endif %}"
-                            style="width: {{ cat.score }}%">
+                            {% else %}bg-red-400{% endif %}" style="width: {{ cat.score }}%">
                         </div>
                     </div>
                     <div class="flex gap-4 text-xs text-gray-500">
@@ -148,8 +146,7 @@
                         <div class="h-2 rounded-full
                             {% if cat.score >= 80 %}bg-green-500
                             {% elif cat.score >= 50 %}bg-yellow-400
-                            {% else %}bg-red-400{% endif %}"
-                            style="width: {{ cat.score }}%">
+                            {% else %}bg-red-400{% endif %}" style="width: {{ cat.score }}%">
                         </div>
                     </div>
                     <div class="flex gap-4 mt-2 text-xs text-gray-500">
@@ -172,13 +169,15 @@
                 <span class="text-2xl mr-2">🌐</span>
                 <h2 class="text-lg font-semibold text-blue-800">Terdeteksi Perbedaan Bahasa</h2>
             </div>
-            <p class="text-sm text-blue-700 mb-3">Skill berikut beda bahasa antara JD dan CV — sistem sudah mengenalinya sebagai skill yang sama:</p>
+            <p class="text-sm text-blue-700 mb-3">Skill berikut beda bahasa antara JD dan CV — sistem sudah mengenalinya
+                sebagai skill yang sama:</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {% for gap in result.language_gaps %}
                 <div class="bg-white rounded-lg px-4 py-2 flex items-center gap-2 text-sm shadow-sm">
                     <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium">{{ gap.jd_term }}</span>
                     <span class="text-gray-400">↔</span>
-                    <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium">{{ gap.resume_term }}</span>
+                    <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium">{{ gap.resume_term
+                        }}</span>
                     <span class="text-gray-400 text-xs ml-auto">= {{ gap.canonical }}</span>
                 </div>
                 {% endfor %}
@@ -195,11 +194,12 @@
                 </div>
                 <div class="flex flex-wrap gap-2">
                     {% if result.matching_skills %}
-                        {% for skill in result.matching_skills %}
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium capitalize">{{ skill }}</span>
-                        {% endfor %}
+                    {% for skill in result.matching_skills %}
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium capitalize">{{
+                        skill }}</span>
+                    {% endfor %}
                     {% else %}
-                        <p class="text-gray-500 text-sm">Belum ada skill yang cocok.</p>
+                    <p class="text-gray-500 text-sm">Belum ada skill yang cocok.</p>
                     {% endif %}
                 </div>
                 <div class="mt-4 pt-3 border-t border-gray-100 text-sm text-gray-500">
@@ -213,11 +213,12 @@
                 </div>
                 <div class="flex flex-wrap gap-2">
                     {% if result.missing_skills %}
-                        {% for skill in result.missing_skills %}
-                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium capitalize">{{ skill }}</span>
-                        {% endfor %}
+                    {% for skill in result.missing_skills %}
+                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium capitalize">{{ skill
+                        }}</span>
+                    {% endfor %}
                     {% else %}
-                        <p class="text-green-600 font-medium">✨ Semua skill terpenuhi!</p>
+                    <p class="text-green-600 font-medium">✨ Semua skill terpenuhi!</p>
                     {% endif %}
                 </div>
                 <div class="mt-4 pt-3 border-t border-gray-100 text-sm text-gray-500">
@@ -227,17 +228,80 @@
         </div>
 
         <!-- ── RECOMMENDATIONS ── -->
-        <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl shadow-xl p-6 mb-6 border border-indigo-100">
+        <div
+            class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl shadow-xl p-6 mb-6 border border-indigo-100">
             <div class="flex items-center mb-4">
                 <span class="text-2xl mr-2">💡</span>
                 <h2 class="text-xl font-semibold text-gray-800">Rekomendasi AI</h2>
             </div>
             <div class="space-y-3">
                 {% for rec in result.recommendations %}
-                    <div class="bg-white rounded-lg px-4 py-3 text-gray-700 text-sm shadow-sm">{{ rec }}</div>
+                <div class="bg-white rounded-lg px-4 py-3 text-gray-700 text-sm shadow-sm">{{ rec }}</div>
                 {% endfor %}
             </div>
         </div>
+
+        <!-- ── KEYWORD HIGHLIGHTER ── -->
+        {% if result.keyword_highlight and result.keyword_highlight.tokens %}
+        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                    <span class="text-2xl mr-2">🔍</span>
+                    <h2 class="text-xl font-semibold text-gray-800">Keyword Highlighter</h2>
+                </div>
+                <div class="flex gap-3 text-xs">
+                    <span class="flex items-center gap-1">
+                        <span class="inline-block w-3 h-3 rounded bg-green-200 border border-green-400"></span>
+                        <span class="text-gray-600">Keyword ditemukan
+                            <b class="text-green-600">({{ result.keyword_highlight.found_count }})</b>
+                        </span>
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <span class="inline-block w-3 h-3 rounded bg-red-200 border border-red-400"></span>
+                        <span class="text-gray-600">Keyword kurang
+                            <b class="text-red-500">({{ result.keyword_highlight.missing_count }})</b>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 mb-4">
+                Teks CV kamu ditampilkan dengan highlight.
+                <span class="text-green-600 font-medium">Hijau</span> = keyword dari JD ditemukan.
+                Keyword yang <b>tidak ditemukan</b> ditampilkan sebagai badge di bawah.
+            </p>
+
+            <!-- Highlighted CV text -->
+            <div class="bg-gray-50 rounded-xl p-4 text-sm text-gray-700 leading-relaxed font-mono whitespace-pre-wrap border border-gray-200 max-h-96 overflow-y-auto"
+                id="highlightBox">
+                {% for token in result.keyword_highlight.tokens %}
+                {% if token.type == 'found' %}
+                <mark
+                    class="bg-green-100 text-green-800 border border-green-300 rounded px-1 py-0.5 font-semibold not-italic">{{
+                    token.text }}</mark>
+                {% else %}
+                {{ token.text }}
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Missing keyword badges -->
+            {% if result.keyword_highlight.missing_keywords %}
+            <div class="mt-4">
+                <div class="text-sm font-medium text-red-600 mb-2">
+                    ❌ Keyword JD yang tidak ditemukan di CV:
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    {% for kw in result.keyword_highlight.missing_keywords %}
+                    <span
+                        class="bg-red-50 border border-red-300 text-red-700 text-xs px-3 py-1 rounded-full font-medium capitalize">
+                        {{ kw }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
 
         <!-- ── STATS ── -->
         <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
@@ -263,10 +327,12 @@
         </div>
 
         <div class="flex gap-4 justify-center">
-            <a href="/" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md">
+            <a href="/"
+                class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md">
                 🔄 Analisis CV Lain
             </a>
-            <button onclick="window.print()" class="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition shadow-md">
+            <button onclick="window.print()"
+                class="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition shadow-md">
                 🖨️ Print
             </button>
         </div>
@@ -287,72 +353,74 @@
         // ── Radar Chart ──
         const radarEl = document.getElementById('radarChart');
         if (radarEl) {
-            const radarRaw = {{ result.radar_data | tojson }};
-            const labels   = radarRaw.map(d => d.category);
+            const radarRaw = {{ result.radar_data | tojson
+        }};
+        const labels = radarRaw.map(d => d.category);
 
-            // Untuk JD: pakai jd_count dinormalisasi ke 0-100 relative max
-            // Untuk CV: pakai score (seberapa banyak JD-skill yang ada di CV per kategori)
-            const maxJD = Math.max(...radarRaw.map(d => d.jd_count), 1);
-            const jdData = radarRaw.map(d => Math.round(d.jd_count / maxJD * 100));
-            const cvData = radarRaw.map(d => d.score);
+        // Untuk JD: pakai jd_count dinormalisasi ke 0-100 relative max
+        // Untuk CV: pakai score (seberapa banyak JD-skill yang ada di CV per kategori)
+        const maxJD = Math.max(...radarRaw.map(d => d.jd_count), 1);
+        const jdData = radarRaw.map(d => Math.round(d.jd_count / maxJD * 100));
+        const cvData = radarRaw.map(d => d.score);
 
-            new Chart(radarEl, {
-                type: 'radar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Job Description',
-                            data: jdData,
-                            backgroundColor: 'rgba(99, 102, 241, 0.15)',
-                            borderColor: 'rgba(99, 102, 241, 0.8)',
-                            borderWidth: 2,
-                            pointBackgroundColor: 'rgba(99, 102, 241, 1)',
-                            pointRadius: 4,
-                        },
-                        {
-                            label: 'CV Kamu',
-                            data: cvData,
-                            backgroundColor: 'rgba(168, 85, 247, 0.15)',
-                            borderColor: 'rgba(168, 85, 247, 0.8)',
-                            borderWidth: 2,
-                            pointBackgroundColor: 'rgba(168, 85, 247, 1)',
-                            pointRadius: 4,
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        r: {
-                            min: 0,
-                            max: 100,
-                            ticks: {
-                                stepSize: 25,
-                                font: { size: 10 },
-                                color: '#9ca3af',
-                                backdropColor: 'transparent',
-                                callback: v => v + '%'
-                            },
-                            pointLabels: {
-                                font: { size: 12, weight: '500' },
-                                color: '#374151'
-                            },
-                            grid: { color: 'rgba(0,0,0,0.07)' },
-                            angleLines: { color: 'rgba(0,0,0,0.07)' }
-                        }
+        new Chart(radarEl, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Job Description',
+                        data: jdData,
+                        backgroundColor: 'rgba(99, 102, 241, 0.15)',
+                        borderColor: 'rgba(99, 102, 241, 0.8)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(99, 102, 241, 1)',
+                        pointRadius: 4,
                     },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%`
-                            }
+                    {
+                        label: 'CV Kamu',
+                        data: cvData,
+                        backgroundColor: 'rgba(168, 85, 247, 0.15)',
+                        borderColor: 'rgba(168, 85, 247, 0.8)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(168, 85, 247, 1)',
+                        pointRadius: 4,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            stepSize: 25,
+                            font: { size: 10 },
+                            color: '#9ca3af',
+                            backdropColor: 'transparent',
+                            callback: v => v + '%'
+                        },
+                        pointLabels: {
+                            font: { size: 12, weight: '500' },
+                            color: '#374151'
+                        },
+                        grid: { color: 'rgba(0,0,0,0.07)' },
+                        angleLines: { color: 'rgba(0,0,0,0.07)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%`
                         }
                     }
                 }
-            });
+            }
+        });
         }
     </script>
 </body>
+
 </html>

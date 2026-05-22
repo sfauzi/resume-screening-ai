@@ -233,3 +233,104 @@ def detect_language_gaps(jd_skills, resume_skills, jd_text, resume_text):
                 gaps.append({'jd_term': jd_word, 'resume_term': resume_word, 'canonical': canonical})
 
     return gaps[:8]  # max 8 untuk UI
+
+def get_keyword_highlight_data(resume_text, jd_skills):
+    """
+    Kembalikan teks CV dengan anotasi keyword:
+    - found: keyword JD yang ditemukan di CV
+    - missing: keyword JD yang TIDAK ditemukan di CV
+    
+    Return: list of dict {word, type} — type: 'found' | 'missing' | 'normal'
+    Untuk keperluan rendering highlight di template.
+    """
+    import re
+
+    if not resume_text or not jd_skills:
+        return []
+
+    # Buat peta: canonical skill → set of surface forms (untuk matching)
+    from utils.preprocessing import SKILL_SYNONYMS
+
+    # Flatten: semua surface form → canonical
+    surface_to_canonical = {}
+    for canonical, synonyms_list in SKILL_SYNONYMS.items():
+        for s in synonyms_list + [canonical]:
+            surface_to_canonical[s.lower()] = canonical
+
+    resume_lower = resume_text.lower()
+
+    # Deteksi semua surface form yang ada di resume (multi-word dulu)
+    found_spans = {}  # (start, end) → type
+
+    all_surfaces = sorted(surface_to_canonical.keys(), key=len, reverse=True)
+    for surface in all_surfaces:
+        canonical = surface_to_canonical[surface]
+        if canonical not in jd_skills:
+            continue
+        pattern = r'\b' + re.escape(surface) + r'\b'
+        for m in re.finditer(pattern, resume_lower):
+            # Cek overlap
+            overlap = any(
+                not (m.end() <= s or m.start() >= e)
+                for (s, e) in found_spans
+            )
+            if not overlap:
+                hit_type = 'found' if canonical in jd_skills else 'missing'
+                # Skill ada di JD, sekarang cek apakah ada di resume_skills
+                found_spans[(m.start(), m.end())] = hit_type
+
+    # Tandai missing: skill JD yang surface form-nya TIDAK ditemukan di resume
+    jd_found_canonicals = {
+        surface_to_canonical[sf]
+        for (start, end), _ in found_spans.items()
+        for sf in [resume_lower[start:end]]
+        if sf in surface_to_canonical
+    }
+    missing_jd = jd_skills - jd_found_canonicals
+
+    # Rekonstruksi teks sebagai token list
+    # Potong resume menjadi max 3000 karakter agar tidak terlalu panjang di UI
+    display_text = resume_text[:3000] + ('...' if len(resume_text) > 3000 else '')
+    display_lower = display_text.lower()
+
+    # Re-scan pada display_text
+    highlight_spans = {}  # start → (end, type, original_text)
+
+    for surface in all_surfaces:
+        canonical = surface_to_canonical[surface]
+        if canonical not in jd_skills:
+            continue
+        is_found = canonical in jd_found_canonicals or True  # re-evaluate below
+        # Cek apakah canonical ada di resume (found) atau tidak (missing)
+        # Kita pakai: jika surface ditemukan di display_lower → found, else skip
+        pattern = r'\b' + re.escape(surface) + r'\b'
+        for m in re.finditer(pattern, display_lower):
+            overlap = any(
+                not (m.end() <= s or m.start() >= e)
+                for s in highlight_spans
+                for e in [highlight_spans[s][0]]
+            )
+            if not overlap:
+                highlight_spans[m.start()] = (m.end(), 'found', display_text[m.start():m.end()])
+
+    # Bangun token list
+    tokens = []
+    pos = 0
+    for start in sorted(highlight_spans.keys()):
+        end, tok_type, original = highlight_spans[start]
+        if start > pos:
+            tokens.append({'text': display_text[pos:start], 'type': 'normal'})
+        tokens.append({'text': original, 'type': tok_type})
+        pos = end
+    if pos < len(display_text):
+        tokens.append({'text': display_text[pos:], 'type': 'normal'})
+
+    # Tambahkan missing skill sebagai info (bukan span teks, tapi badge info)
+    missing_info = sorted(list(missing_jd))
+
+    return {
+        'tokens': tokens,
+        'missing_keywords': missing_info,
+        'found_count': len(highlight_spans),
+        'missing_count': len(missing_jd),
+    }    

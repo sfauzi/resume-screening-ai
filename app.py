@@ -101,6 +101,10 @@ def analyze():
         # Step 8: Radar chart data per kategori
         radar_data = get_radar_data(jd_skills, resume_skills)
 
+        # Step 9: Keyword Highlighter data
+        from utils.similarity import get_keyword_highlight_data
+        keyword_highlight = get_keyword_highlight_data(resume_text, jd_skills)
+
         result = {
             'combined_score': combined_score,
             'similarity_score': similarity_score,
@@ -114,6 +118,7 @@ def analyze():
             'resume_word_count': len(processed_resume.split()),
             'jd_skills_count': len(jd_skills),
             'resume_skills_count': len(resume_skills),
+            'keyword_highlight': keyword_highlight,
         }
 
         return render_template('result.html', result=result)

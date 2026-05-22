@@ -1,83 +1,149 @@
-/* Custom styles for Resume Screening AI */
+/* ─────────────────────────────────────────────
+   Resume Screening AI — Modern Minimalist Theme
+   Font: DM Sans (UI) + DM Mono (numbers/code)
+   Palette: zinc / white / emerald accent
+───────────────────────────────────────────── */
 
-/* Progress ring animation */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #18181b;
+}
+
+.font-mono,
+code,
+.font-mono * {
+    font-family: 'DM Mono', 'Fira Mono', 'Cascadia Code', monospace;
+}
+
+/* ── Progress ring ─────────────────────────── */
 .progress-ring {
-    transition: stroke-dashoffset 1s ease-in-out;
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
 }
 
-/* Upload area hover effect */
-#uploadArea {
-    transition: all 0.3s ease;
+/* ── Upload area ───────────────────────────── */
+.upload-area {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-#uploadArea:hover {
-    border-color: #6366f1;
-    background-color: #f8fafc;
+.upload-area.drag-over {
+    border-color: #52525b;
+    background-color: #fafafa;
 }
 
-/* Custom scrollbar */
+/* ── Custom scrollbar ──────────────────────── */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
+    background: #f4f4f5;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #c7d2fe;
-    border-radius: 10px;
+    background: #d4d4d8;
+    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #818cf8;
+    background: #a1a1aa;
 }
 
-/* Print styles */
-@media print {
-    nav, 
-    .action-buttons,
-    button {
-        display: none !important;
-    }
-    
-    body {
-        background: white !important;
-    }
-    
-    .shadow-xl {
-        box-shadow: none !important;
-        border: 1px solid #e5e7eb;
-    }
+/* ── Highlight box scrollbar ───────────────── */
+#highlightBox::-webkit-scrollbar {
+    width: 4px;
 }
 
-/* Button loading state */
-.btn-loading {
-    opacity: 0.7;
-    cursor: not-allowed;
+#highlightBox::-webkit-scrollbar-thumb {
+    background: #e4e4e7;
+    border-radius: 2px;
 }
 
-.btn-loading::after {
-    content: " ...";
-}
-
-/* Skill tag animations */
+/* ── Skill tags ────────────────────────────── */
 .skill-tag {
-    transition: transform 0.2s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .skill-tag:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+/* ── Card hover micro-interaction ─────────── */
+.border.border-zinc-100:hover {
+    border-color: #d4d4d8;
+    transition: border-color 0.2s ease;
+}
+
+/* ── Keyword highlight mark ────────────────── */
+mark {
+    background: none;
+}
+
+mark.bg-emerald-100 {
+    background-color: #d1fae5;
+    border-color: #6ee7b7;
+}
+
+/* ── Button states ─────────────────────────── */
+button[type="submit"]:active,
+a.bg-zinc-900:active {
+    transform: scale(0.98);
+}
+
+/* ── Print styles ──────────────────────────── */
+@media print {
+    nav,
+    .flex.gap-3.justify-center,
+    button {
+        display: none !important;
+    }
+
+    body {
+        background: white !important;
+        font-size: 11px;
+    }
+
+    .border {
+        border: 1px solid #e4e4e7 !important;
+        box-shadow: none !important;
+    }
+
+    .bg-zinc-50 {
+        background: white !important;
+    }
+
+    .max-h-80,
+    .max-h-96 {
+        max-height: none !important;
+        overflow: visible !important;
     }
 }
+
+/* ── Responsive ────────────────────────────── */
+@media (max-width: 640px) {
+    .grid.grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Subtle page fade-in ───────────────────── */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.bg-white.border.border-zinc-200.rounded-xl {
+    animation: fadeUp 0.35s ease both;
+}
+
+.bg-white.border.border-zinc-200.rounded-xl:nth-child(1) { animation-delay: 0.05s; }
+.bg-white.border.border-zinc-200.rounded-xl:nth-child(2) { animation-delay: 0.10s; }
+.bg-white.border.border-zinc-200.rounded-xl:nth-child(3) { animation-delay: 0.15s; }
+.bg-white.border.border-zinc-200.rounded-xl:nth-child(4) { animation-delay: 0.20s; }
+.bg-white.border.border-zinc-200.rounded-xl:nth-child(5) { animation-delay: 0.25s; }

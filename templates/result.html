@@ -7,116 +7,137 @@
     <title>Analysis Results - Resume Screening AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+<body class="bg-zinc-50 min-h-screen">
 
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4 py-3">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-zinc-200">
+        <div class="max-w-5xl mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <a href="/" class="flex items-center space-x-2">
-                    <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <a href="/" class="flex items-center gap-2.5 hover:opacity-70 transition-opacity">
+                    <svg class="w-5 h-5 text-zinc-800" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                     </svg>
-                    <span class="text-xl font-bold text-gray-800">Resume Screening AI</span>
+                    <span class="text-sm font-semibold text-zinc-800 tracking-tight">Resume Screening AI</span>
                 </a>
-                <a href="/" class="text-gray-600 hover:text-indigo-600 transition">New Analysis</a>
+                <a href="/"
+                    class="text-xs text-zinc-500 hover:text-zinc-800 transition-colors flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    New Analysis
+                </a>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto px-4 py-10">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Analysis Results</h1>
-            <p class="text-gray-600 mt-2">Analisis lintas bahasa (ID/EN) · Multi-bidang</p>
+    <div class="max-w-3xl mx-auto px-6 py-12">
+
+        <!-- Page heading -->
+        <div class="mb-10">
+            <h1 class="text-2xl font-semibold text-zinc-900 tracking-tight">Analysis Results</h1>
+            <p class="text-sm text-zinc-500 mt-1">Bilingual analysis (ID/EN) · Multi-domain skill matching</p>
         </div>
 
         <!-- ── MAIN SCORE ── -->
-        <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
-            <div class="text-center mb-6">
-                <div class="text-sm text-gray-500 uppercase tracking-widest mb-2">Overall Match Score</div>
-                <div class="relative inline-flex items-center justify-center mb-4">
-                    <svg class="w-48 h-48" viewBox="0 0 200 200">
-                        <circle stroke="#e5e7eb" stroke-width="14" fill="transparent" r="88" cx="100" cy="100" />
-                        <circle class="progress-ring" stroke="#4f46e5" stroke-width="14" fill="transparent" r="88"
+        <div class="bg-white border border-zinc-200 rounded-xl p-8 mb-5">
+            <p class="text-xs font-medium text-zinc-400 uppercase tracking-widest mb-6">Overall Match Score</p>
+            <div class="flex flex-col items-center mb-8">
+                <div class="relative inline-flex items-center justify-center">
+                    <svg class="w-44 h-44" viewBox="0 0 200 200">
+                        <circle stroke="#f4f4f5" stroke-width="12" fill="transparent" r="88" cx="100" cy="100" />
+                        <circle class="progress-ring" stroke="#18181b" stroke-width="12" fill="transparent" r="88"
                             cx="100" cy="100" stroke-linecap="round" stroke-dasharray="553" stroke-dashoffset="553"
                             data-score="{{ result.combined_score }}"
-                            style="transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1s ease;" />
+                            style="transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1);" />
                     </svg>
                     <div class="absolute text-center">
-                        <div class="text-5xl font-bold text-gray-800">{{ "%.0f"|format(result.combined_score) }}%</div>
-                        <div class="text-xs text-gray-500 mt-1">Combined Score</div>
+                        <div class="text-4xl font-semibold text-zinc-900 font-mono">{{
+                            "%.0f"|format(result.combined_score) }}%</div>
+                        <div class="text-xs text-zinc-400 mt-1">Combined</div>
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-indigo-50 rounded-xl p-4 text-center">
-                    <div class="text-2xl font-bold text-indigo-700">{{ "%.1f"|format(result.similarity_score) }}%</div>
-                    <div class="text-xs text-gray-500 mt-1">Kemiripan Teks (TF-IDF)</div>
-                    <div class="text-xs text-gray-400">bobot 40%</div>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="border border-zinc-100 rounded-lg p-4 text-center">
+                    <div class="text-xl font-semibold text-zinc-800 font-mono">{{ "%.1f"|format(result.similarity_score)
+                        }}%</div>
+                    <div class="text-xs text-zinc-500 mt-1">Text Similarity (TF-IDF)</div>
+                    <div class="text-xs text-zinc-400 mt-0.5">weight 40%</div>
                 </div>
-                <div class="bg-purple-50 rounded-xl p-4 text-center">
-                    <div class="text-2xl font-bold text-purple-700">{{ "%.1f"|format(result.skill_score) }}%</div>
-                    <div class="text-xs text-gray-500 mt-1">Skill Match (ID+EN)</div>
-                    <div class="text-xs text-gray-400">bobot 60%</div>
+                <div class="border border-zinc-100 rounded-lg p-4 text-center">
+                    <div class="text-xl font-semibold text-zinc-800 font-mono">{{ "%.1f"|format(result.skill_score) }}%
+                    </div>
+                    <div class="text-xs text-zinc-500 mt-1">Skill Match (ID+EN)</div>
+                    <div class="text-xs text-zinc-400 mt-0.5">weight 60%</div>
                 </div>
             </div>
         </div>
 
         <!-- ── RADAR CHART ── -->
         {% if result.radar_data and result.radar_data|length >= 3 %}
-        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
-            <div class="flex items-center mb-2">
-                <span class="text-2xl mr-2">🕸️</span>
-                <h2 class="text-xl font-semibold text-gray-800">Skill Radar Chart</h2>
+        <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-5">
+            <div class="flex items-center gap-2 mb-1">
+                <svg class="w-4 h-4 text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
+                </svg>
+                <h2 class="text-sm font-semibold text-zinc-800">Skill Radar</h2>
             </div>
-            <p class="text-sm text-gray-500 mb-4">Perbandingan skill per kategori antara Job Description dan CV kamu</p>
+            <p class="text-xs text-zinc-500 mb-5 ml-6">Skill coverage per category — JD requirements vs your CV</p>
 
             <div class="flex justify-center">
-                <div style="width: 100%; max-width: 480px;">
+                <div style="width: 100%; max-width: 420px;">
                     <canvas id="radarChart"></canvas>
                 </div>
             </div>
 
-            <!-- Legend -->
             <div class="flex justify-center gap-6 mt-4">
-                <div class="flex items-center gap-2 text-sm text-gray-600">
-                    <div class="w-3 h-3 rounded-full" style="background: rgba(99,102,241,0.7);"></div>
+                <div class="flex items-center gap-2 text-xs text-zinc-500">
+                    <div class="w-2.5 h-2.5 rounded-sm" style="background: rgba(24,24,27,0.6);"></div>
                     <span>Job Description</span>
                 </div>
-                <div class="flex items-center gap-2 text-sm text-gray-600">
-                    <div class="w-3 h-3 rounded-full" style="background: rgba(168,85,247,0.7);"></div>
-                    <span>CV Kamu</span>
+                <div class="flex items-center gap-2 text-xs text-zinc-500">
+                    <div class="w-2.5 h-2.5 rounded-sm" style="background: rgba(113,113,122,0.5);"></div>
+                    <span>Your CV</span>
                 </div>
             </div>
 
             <!-- Per-category breakdown -->
-            <div class="mt-6 space-y-3">
+            <div class="mt-6 space-y-2">
                 {% for cat in result.radar_data %}
-                <div class="border border-gray-100 rounded-xl p-4">
+                <div class="border border-zinc-100 rounded-lg p-3.5">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="font-medium text-gray-700 text-sm">{{ cat.category }}</span>
-                        <span class="text-sm font-bold
-                            {% if cat.score >= 80 %}text-green-600
-                            {% elif cat.score >= 50 %}text-yellow-600
+                        <span class="text-xs font-medium text-zinc-700">{{ cat.category }}</span>
+                        <span class="text-xs font-semibold font-mono
+                            {% if cat.score >= 80 %}text-emerald-600
+                            {% elif cat.score >= 50 %}text-amber-600
                             {% else %}text-red-500{% endif %}">
                             {{ cat.score }}%
                         </span>
                     </div>
-                    <div class="w-full bg-gray-100 rounded-full h-2 mb-2">
-                        <div class="h-2 rounded-full transition-all duration-700
-                            {% if cat.score >= 80 %}bg-green-500
-                            {% elif cat.score >= 50 %}bg-yellow-400
+                    <div class="w-full bg-zinc-100 rounded-full h-1.5 mb-2">
+                        <div class="h-1.5 rounded-full transition-all duration-700
+                            {% if cat.score >= 80 %}bg-emerald-500
+                            {% elif cat.score >= 50 %}bg-amber-400
                             {% else %}bg-red-400{% endif %}" style="width: {{ cat.score }}%">
                         </div>
                     </div>
-                    <div class="flex gap-4 text-xs text-gray-500">
-                        <span>JD: <b>{{ cat.jd_count }}</b> skill</span>
-                        <span>CV: <b>{{ cat.resume_count }}</b> skill</span>
+                    <div class="flex gap-4 text-xs text-zinc-400">
+                        <span>JD: <span class="font-medium text-zinc-600">{{ cat.jd_count }}</span></span>
+                        <span>CV: <span class="font-medium text-zinc-600">{{ cat.resume_count }}</span></span>
                         {% if cat.missing %}
-                        <span class="text-red-400">Kurang: {{ cat.missing|join(', ') }}</span>
+                        <span class="text-red-400">Missing: {{ cat.missing|join(', ') }}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -124,36 +145,39 @@
             </div>
         </div>
         {% elif result.radar_data and result.radar_data|length > 0 %}
-        <!-- Fallback: bar chart kalau kategori < 3 -->
-        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
-            <div class="flex items-center mb-4">
-                <span class="text-2xl mr-2">📊</span>
-                <h2 class="text-xl font-semibold text-gray-800">Skill per Kategori</h2>
+        <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-5">
+            <div class="flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4 text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                </svg>
+                <h2 class="text-sm font-semibold text-zinc-800">Skill by Category</h2>
             </div>
-            <div class="space-y-3">
+            <div class="space-y-2">
                 {% for cat in result.radar_data %}
-                <div class="border border-gray-100 rounded-xl p-4">
+                <div class="border border-zinc-100 rounded-lg p-3.5">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="font-medium text-gray-700 text-sm">{{ cat.category }}</span>
-                        <span class="text-sm font-bold
-                            {% if cat.score >= 80 %}text-green-600
-                            {% elif cat.score >= 50 %}text-yellow-600
+                        <span class="text-xs font-medium text-zinc-700">{{ cat.category }}</span>
+                        <span class="text-xs font-semibold font-mono
+                            {% if cat.score >= 80 %}text-emerald-600
+                            {% elif cat.score >= 50 %}text-amber-600
                             {% else %}text-red-500{% endif %}">
                             {{ cat.score }}%
                         </span>
                     </div>
-                    <div class="w-full bg-gray-100 rounded-full h-2">
-                        <div class="h-2 rounded-full
-                            {% if cat.score >= 80 %}bg-green-500
-                            {% elif cat.score >= 50 %}bg-yellow-400
+                    <div class="w-full bg-zinc-100 rounded-full h-1.5">
+                        <div class="h-1.5 rounded-full
+                            {% if cat.score >= 80 %}bg-emerald-500
+                            {% elif cat.score >= 50 %}bg-amber-400
                             {% else %}bg-red-400{% endif %}" style="width: {{ cat.score }}%">
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-2 text-xs text-gray-500">
-                        <span>JD: <b>{{ cat.jd_count }}</b> skill</span>
-                        <span>CV: <b>{{ cat.resume_count }}</b> skill</span>
+                    <div class="flex gap-4 mt-2 text-xs text-zinc-400">
+                        <span>JD: <span class="font-medium text-zinc-600">{{ cat.jd_count }}</span></span>
+                        <span>CV: <span class="font-medium text-zinc-600">{{ cat.resume_count }}</span></span>
                         {% if cat.missing %}
-                        <span class="text-red-400">Kurang: {{ cat.missing|join(', ') }}</span>
+                        <span class="text-red-400">Missing: {{ cat.missing|join(', ') }}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -164,21 +188,30 @@
 
         <!-- ── CROSS-LANGUAGE ── -->
         {% if result.language_gaps %}
-        <div class="bg-blue-50 border border-blue-200 rounded-2xl shadow p-6 mb-6">
-            <div class="flex items-center mb-3">
-                <span class="text-2xl mr-2">🌐</span>
-                <h2 class="text-lg font-semibold text-blue-800">Terdeteksi Perbedaan Bahasa</h2>
+        <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-5">
+            <div class="flex items-center gap-2 mb-1">
+                <svg class="w-4 h-4 text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802" />
+                </svg>
+                <h2 class="text-sm font-semibold text-zinc-800">Language Differences Detected</h2>
             </div>
-            <p class="text-sm text-blue-700 mb-3">Skill berikut beda bahasa antara JD dan CV — sistem sudah mengenalinya
-                sebagai skill yang sama:</p>
+            <p class="text-xs text-zinc-500 mb-4 ml-6">These skills differ in language between JD and CV — the system
+                already recognizes them as the same:</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {% for gap in result.language_gaps %}
-                <div class="bg-white rounded-lg px-4 py-2 flex items-center gap-2 text-sm shadow-sm">
-                    <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium">{{ gap.jd_term }}</span>
-                    <span class="text-gray-400">↔</span>
-                    <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium">{{ gap.resume_term
+                <div class="border border-zinc-100 rounded-lg px-4 py-2.5 flex items-center gap-2 text-xs">
+                    <span class="bg-zinc-100 text-zinc-700 px-2 py-1 rounded font-medium font-mono">{{ gap.jd_term
                         }}</span>
-                    <span class="text-gray-400 text-xs ml-auto">= {{ gap.canonical }}</span>
+                    <svg class="w-3 h-3 text-zinc-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                    </svg>
+                    <span class="bg-emerald-50 text-emerald-700 px-2 py-1 rounded font-medium font-mono">{{
+                        gap.resume_term }}</span>
+                    <span class="text-zinc-400 ml-auto">≡ {{ gap.canonical }}</span>
                 </div>
                 {% endfor %}
             </div>
@@ -186,97 +219,114 @@
         {% endif %}
 
         <!-- ── SKILLS ── -->
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
-            <div class="bg-white rounded-2xl shadow-xl p-6">
-                <div class="flex items-center mb-4">
-                    <span class="text-2xl mr-2">✅</span>
-                    <h2 class="text-xl font-semibold text-gray-800">Skill Cocok</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-5">
+            <div class="bg-white border border-zinc-200 rounded-xl p-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <svg class="w-4 h-4 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    <h2 class="text-sm font-semibold text-zinc-800">Matched Skills</h2>
                 </div>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-1.5">
                     {% if result.matching_skills %}
                     {% for skill in result.matching_skills %}
-                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium capitalize">{{
+                    <span
+                        class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded text-xs font-medium capitalize">{{
                         skill }}</span>
                     {% endfor %}
                     {% else %}
-                    <p class="text-gray-500 text-sm">Belum ada skill yang cocok.</p>
+                    <p class="text-zinc-400 text-xs">No matching skills found.</p>
                     {% endif %}
                 </div>
-                <div class="mt-4 pt-3 border-t border-gray-100 text-sm text-gray-500">
-                    {{ result.matching_skills|length }} dari {{ result.jd_skills_count }} skill JD terpenuhi
+                <div class="mt-4 pt-3 border-t border-zinc-100 text-xs text-zinc-400">
+                    {{ result.matching_skills|length }} of {{ result.jd_skills_count }} JD skills covered
                 </div>
             </div>
-            <div class="bg-white rounded-2xl shadow-xl p-6">
-                <div class="flex items-center mb-4">
-                    <span class="text-2xl mr-2">⚠️</span>
-                    <h2 class="text-xl font-semibold text-gray-800">Skill Kurang</h2>
+            <div class="bg-white border border-zinc-200 rounded-xl p-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <svg class="w-4 h-4 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                    </svg>
+                    <h2 class="text-sm font-semibold text-zinc-800">Missing Skills</h2>
                 </div>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-1.5">
                     {% if result.missing_skills %}
                     {% for skill in result.missing_skills %}
-                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium capitalize">{{ skill
-                        }}</span>
+                    <span
+                        class="bg-red-50 text-red-600 border border-red-200 px-2.5 py-1 rounded text-xs font-medium capitalize">{{
+                        skill }}</span>
                     {% endfor %}
                     {% else %}
-                    <p class="text-green-600 font-medium">✨ Semua skill terpenuhi!</p>
+                    <p class="text-emerald-600 text-xs font-medium">All required skills present.</p>
                     {% endif %}
                 </div>
-                <div class="mt-4 pt-3 border-t border-gray-100 text-sm text-gray-500">
-                    {{ result.missing_skills|length }} skill belum tercantum di CV
+                <div class="mt-4 pt-3 border-t border-zinc-100 text-xs text-zinc-400">
+                    {{ result.missing_skills|length }} skills not found in CV
                 </div>
             </div>
         </div>
 
         <!-- ── RECOMMENDATIONS ── -->
-        <div
-            class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl shadow-xl p-6 mb-6 border border-indigo-100">
-            <div class="flex items-center mb-4">
-                <span class="text-2xl mr-2">💡</span>
-                <h2 class="text-xl font-semibold text-gray-800">Rekomendasi AI</h2>
+        <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-5">
+            <div class="flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4 text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                </svg>
+                <h2 class="text-sm font-semibold text-zinc-800">AI Recommendations</h2>
             </div>
-            <div class="space-y-3">
+            <div class="space-y-2">
                 {% for rec in result.recommendations %}
-                <div class="bg-white rounded-lg px-4 py-3 text-gray-700 text-sm shadow-sm">{{ rec }}</div>
+                <div class="border border-zinc-100 rounded-lg px-4 py-3 text-xs text-zinc-700 leading-relaxed">{{ rec }}
+                </div>
                 {% endfor %}
             </div>
         </div>
 
         <!-- ── KEYWORD HIGHLIGHTER ── -->
         {% if result.keyword_highlight and result.keyword_highlight.tokens %}
-        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
-            <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center">
-                    <span class="text-2xl mr-2">🔍</span>
-                    <h2 class="text-xl font-semibold text-gray-800">Keyword Highlighter</h2>
+        <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-5">
+            <div class="flex items-start justify-between mb-1">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                    <h2 class="text-sm font-semibold text-zinc-800">Keyword Highlighter</h2>
                 </div>
-                <div class="flex gap-3 text-xs">
-                    <span class="flex items-center gap-1">
-                        <span class="inline-block w-3 h-3 rounded bg-green-200 border border-green-400"></span>
-                        <span class="text-gray-600">Keyword ditemukan
-                            <b class="text-green-600">({{ result.keyword_highlight.found_count }})</b>
-                        </span>
+                <div class="flex gap-4 text-xs">
+                    <span class="flex items-center gap-1.5 text-zinc-500">
+                        <span
+                            class="inline-block w-2.5 h-2.5 rounded-sm bg-emerald-200 border border-emerald-400"></span>
+                        Found <span class="font-semibold text-zinc-700 font-mono">({{
+                            result.keyword_highlight.found_count }})</span>
                     </span>
-                    <span class="flex items-center gap-1">
-                        <span class="inline-block w-3 h-3 rounded bg-red-200 border border-red-400"></span>
-                        <span class="text-gray-600">Keyword kurang
-                            <b class="text-red-500">({{ result.keyword_highlight.missing_count }})</b>
-                        </span>
+                    <span class="flex items-center gap-1.5 text-zinc-500">
+                        <span class="inline-block w-2.5 h-2.5 rounded-sm bg-red-200 border border-red-300"></span>
+                        Missing <span class="font-semibold text-zinc-700 font-mono">({{
+                            result.keyword_highlight.missing_count }})</span>
                     </span>
                 </div>
             </div>
-            <p class="text-sm text-gray-500 mb-4">
-                Teks CV kamu ditampilkan dengan highlight.
-                <span class="text-green-600 font-medium">Hijau</span> = keyword dari JD ditemukan.
-                Keyword yang <b>tidak ditemukan</b> ditampilkan sebagai badge di bawah.
+            <p class="text-xs text-zinc-500 mb-4 ml-6">
+                CV text with highlighted keywords.
+                <span class="text-emerald-600 font-medium">Green</span> = JD keyword found in CV.
+                Missing keywords shown as badges below.
             </p>
 
             <!-- Highlighted CV text -->
-            <div class="bg-gray-50 rounded-xl p-4 text-sm text-gray-700 leading-relaxed font-mono whitespace-pre-wrap border border-gray-200 max-h-96 overflow-y-auto"
+            <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-4 text-xs text-zinc-700 leading-relaxed font-mono whitespace-pre-wrap max-h-80 overflow-y-auto"
                 id="highlightBox">
                 {% for token in result.keyword_highlight.tokens %}
                 {% if token.type == 'found' %}
                 <mark
-                    class="bg-green-100 text-green-800 border border-green-300 rounded px-1 py-0.5 font-semibold not-italic">{{
+                    class="bg-emerald-100 text-emerald-800 border border-emerald-300 rounded px-1 py-0.5 font-semibold not-italic">{{
                     token.text }}</mark>
                 {% else %}
                 {{ token.text }}
@@ -287,15 +337,18 @@
             <!-- Missing keyword badges -->
             {% if result.keyword_highlight.missing_keywords %}
             <div class="mt-4">
-                <div class="text-sm font-medium text-red-600 mb-2">
-                    ❌ Keyword JD yang tidak ditemukan di CV:
+                <div class="flex items-center gap-1.5 text-xs font-medium text-red-600 mb-2">
+                    <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                    JD keywords not found in CV:
                 </div>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-1.5">
                     {% for kw in result.keyword_highlight.missing_keywords %}
                     <span
-                        class="bg-red-50 border border-red-300 text-red-700 text-xs px-3 py-1 rounded-full font-medium capitalize">
-                        {{ kw }}
-                    </span>
+                        class="bg-red-50 border border-red-200 text-red-600 text-xs px-2.5 py-1 rounded font-medium capitalize">{{
+                        kw }}</span>
                     {% endfor %}
                 </div>
             </div>
@@ -304,36 +357,53 @@
         {% endif %}
 
         <!-- ── STATS ── -->
-        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">📊 Statistik Analisis</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="text-center p-3 bg-gray-50 rounded-xl">
-                    <div class="text-2xl font-bold text-indigo-600">{{ result.jd_word_count }}</div>
-                    <div class="text-xs text-gray-500 mt-1">Kata di JD</div>
+        <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-8">
+            <div class="flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4 text-zinc-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+                </svg>
+                <h2 class="text-sm font-semibold text-zinc-800">Analysis Statistics</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="text-center p-4 bg-zinc-50 rounded-lg border border-zinc-100">
+                    <div class="text-xl font-semibold text-zinc-800 font-mono">{{ result.jd_word_count }}</div>
+                    <div class="text-xs text-zinc-500 mt-1">Words in JD</div>
                 </div>
-                <div class="text-center p-3 bg-gray-50 rounded-xl">
-                    <div class="text-2xl font-bold text-indigo-600">{{ result.resume_word_count }}</div>
-                    <div class="text-xs text-gray-500 mt-1">Kata di CV</div>
+                <div class="text-center p-4 bg-zinc-50 rounded-lg border border-zinc-100">
+                    <div class="text-xl font-semibold text-zinc-800 font-mono">{{ result.resume_word_count }}</div>
+                    <div class="text-xs text-zinc-500 mt-1">Words in CV</div>
                 </div>
-                <div class="text-center p-3 bg-gray-50 rounded-xl">
-                    <div class="text-2xl font-bold text-purple-600">{{ result.jd_skills_count }}</div>
-                    <div class="text-xs text-gray-500 mt-1">Skill di JD</div>
+                <div class="text-center p-4 bg-zinc-50 rounded-lg border border-zinc-100">
+                    <div class="text-xl font-semibold text-zinc-800 font-mono">{{ result.jd_skills_count }}</div>
+                    <div class="text-xs text-zinc-500 mt-1">Skills in JD</div>
                 </div>
-                <div class="text-center p-3 bg-gray-50 rounded-xl">
-                    <div class="text-2xl font-bold text-purple-600">{{ result.resume_skills_count }}</div>
-                    <div class="text-xs text-gray-500 mt-1">Skill di CV</div>
+                <div class="text-center p-4 bg-zinc-50 rounded-lg border border-zinc-100">
+                    <div class="text-xl font-semibold text-zinc-800 font-mono">{{ result.resume_skills_count }}</div>
+                    <div class="text-xs text-zinc-500 mt-1">Skills in CV</div>
                 </div>
             </div>
         </div>
 
-        <div class="flex gap-4 justify-center">
+        <!-- Action buttons -->
+        <div class="flex gap-3 justify-center">
             <a href="/"
-                class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md">
-                🔄 Analisis CV Lain
+                class="bg-zinc-900 hover:bg-zinc-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                New Analysis
             </a>
             <button onclick="window.print()"
-                class="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition shadow-md">
-                🖨️ Print
+                class="bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-700 text-sm font-medium px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+                </svg>
+                Print
             </button>
         </div>
     </div>
@@ -356,9 +426,6 @@
             const radarRaw = {{ result.radar_data | tojson
         }};
         const labels = radarRaw.map(d => d.category);
-
-        // Untuk JD: pakai jd_count dinormalisasi ke 0-100 relative max
-        // Untuk CV: pakai score (seberapa banyak JD-skill yang ada di CV per kategori)
         const maxJD = Math.max(...radarRaw.map(d => d.jd_count), 1);
         const jdData = radarRaw.map(d => Math.round(d.jd_count / maxJD * 100));
         const cvData = radarRaw.map(d => d.score);
@@ -371,20 +438,21 @@
                     {
                         label: 'Job Description',
                         data: jdData,
-                        backgroundColor: 'rgba(99, 102, 241, 0.15)',
-                        borderColor: 'rgba(99, 102, 241, 0.8)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(99, 102, 241, 1)',
-                        pointRadius: 4,
+                        backgroundColor: 'rgba(24, 24, 27, 0.07)',
+                        borderColor: 'rgba(24, 24, 27, 0.65)',
+                        borderWidth: 1.5,
+                        pointBackgroundColor: 'rgba(24, 24, 27, 0.8)',
+                        pointRadius: 3,
                     },
                     {
-                        label: 'CV Kamu',
+                        label: 'CV',
                         data: cvData,
-                        backgroundColor: 'rgba(168, 85, 247, 0.15)',
-                        borderColor: 'rgba(168, 85, 247, 0.8)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(168, 85, 247, 1)',
-                        pointRadius: 4,
+                        backgroundColor: 'rgba(113, 113, 122, 0.12)',
+                        borderColor: 'rgba(113, 113, 122, 0.7)',
+                        borderWidth: 1.5,
+                        borderDash: [4, 3],
+                        pointBackgroundColor: 'rgba(113, 113, 122, 0.9)',
+                        pointRadius: 3,
                     }
                 ]
             },
@@ -396,22 +464,25 @@
                         max: 100,
                         ticks: {
                             stepSize: 25,
-                            font: { size: 10 },
-                            color: '#9ca3af',
+                            font: { size: 9, family: 'DM Mono, monospace' },
+                            color: '#a1a1aa',
                             backdropColor: 'transparent',
                             callback: v => v + '%'
                         },
                         pointLabels: {
-                            font: { size: 12, weight: '500' },
-                            color: '#374151'
+                            font: { size: 11, weight: '500', family: 'DM Sans, sans-serif' },
+                            color: '#52525b'
                         },
-                        grid: { color: 'rgba(0,0,0,0.07)' },
-                        angleLines: { color: 'rgba(0,0,0,0.07)' }
+                        grid: { color: 'rgba(0,0,0,0.06)' },
+                        angleLines: { color: 'rgba(0,0,0,0.06)' }
                     }
                 },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
+                        backgroundColor: '#18181b',
+                        titleFont: { family: 'DM Sans, sans-serif', size: 11 },
+                        bodyFont: { family: 'DM Mono, monospace', size: 11 },
                         callbacks: {
                             label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%`
                         }

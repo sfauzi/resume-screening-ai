@@ -128,5 +128,28 @@ def too_large(e):
     flash('File too large. Maximum size is 5MB', 'error')
     return redirect(url_for('index'))
 
+@app.route('/test')
+def test():
+    errors = []
+    
+    try:
+        from utils.pdf_parser import extract_text_from_pdf
+    except Exception as e:
+        errors.append(f"pdf_parser: {str(e)}")
+    
+    try:
+        from utils.preprocessing import preprocess_text, extract_skills
+    except Exception as e:
+        errors.append(f"preprocessing: {str(e)}")
+    
+    try:
+        from utils.similarity import calculate_similarity
+    except Exception as e:
+        errors.append(f"similarity: {str(e)}")
+
+    if errors:
+        return "<br>".join(errors), 500
+    return "All imports OK!", 200
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -124,6 +124,81 @@ def get_recommendations(jd_skills, resume_skills, similarity_score, skill_score)
     return recommendations
 
 
+def get_radar_data(jd_skills, resume_skills):
+    """
+    Hitung skor per kategori skill untuk radar chart.
+    Return: list of dict {category, jd_count, resume_count, score, matching, missing}
+    """
+    SKILL_CATEGORIES = {
+        'Soft Skills': {
+            'communication', 'teamwork', 'leadership', 'problem solving',
+            'time management', 'adaptability', 'creativity', 'attention to detail',
+            'multitasking', 'interpersonal skills', 'negotiation', 'public speaking'
+        },
+        'IT & Dev': {
+            'python', 'javascript', 'java', 'typescript', 'php', 'sql', 'html',
+            'css', 'react', 'angular', 'vue', 'django', 'flask', 'node.js',
+            'machine learning', 'deep learning', 'data analysis', 'data visualization',
+            'git', 'docker', 'kubernetes', 'aws', 'azure', 'linux'
+        },
+        'Marketing': {
+            'digital marketing', 'social media marketing', 'seo', 'content marketing',
+            'brand management', 'market research', 'advertising', 'email marketing', 'crm'
+        },
+        'Finance': {
+            'financial analysis', 'accounting', 'budgeting', 'tax', 'auditing',
+            'microsoft excel', 'financial statements', 'investment'
+        },
+        'HR & Org': {
+            'recruitment', 'training and development', 'performance management',
+            'compensation and benefits', 'labor law', 'employee relations',
+            'organizational development'
+        },
+        'Design': {
+            'graphic design', 'ui ux design', 'photography', 'video editing',
+            'adobe photoshop', 'adobe illustrator'
+        },
+        'Engineering': {
+            'autocad', 'project management', 'quality control',
+            'lean manufacturing', 'structural analysis', 'maintenance'
+        },
+        'Sales & Service': {
+            'customer service', 'sales', 'negotiation'
+        },
+    }
+
+    radar = []
+    for category, skills_in_cat in SKILL_CATEGORIES.items():
+        jd_in_cat = jd_skills.intersection(skills_in_cat)
+        resume_in_cat = resume_skills.intersection(skills_in_cat)
+
+        # Hanya tampilkan kategori yang relevan
+        if not jd_in_cat and not resume_in_cat:
+            continue
+
+        jd_count = len(jd_in_cat)
+        resume_count = len(resume_in_cat)
+
+        if jd_count > 0:
+            score = round(len(jd_in_cat.intersection(resume_in_cat)) / jd_count * 100)
+        elif resume_count > 0:
+            score = 100
+        else:
+            score = 0
+
+        radar.append({
+            'category': category,
+            'jd_count': jd_count,
+            'resume_count': resume_count,
+            'score': score,
+            'matching': sorted(list(jd_in_cat.intersection(resume_in_cat))),
+            'missing': sorted(list(jd_in_cat.difference(resume_in_cat))),
+        })
+
+    radar.sort(key=lambda x: x['jd_count'], reverse=True)
+    return radar
+
+
 def detect_language_gaps(jd_skills, resume_skills, jd_text, resume_text):
     """
     Deteksi kemungkinan gap akibat perbedaan bahasa.

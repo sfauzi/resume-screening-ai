@@ -1,165 +1,79 @@
 """
-TEXT PREPROCESSING UTILITY
-Fungsi: Membersihkan dan memproses teks untuk NLP
+TEXT PREPROCESSING UTILITY - No NLTK (Vercel compatible)
 """
 
 import re
-import nltk
-import ssl
-import os
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 
+# Stopwords manual — tidak perlu NLTK download
+STOPWORDS = {
+    'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you',
+    'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself',
+    'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them',
+    'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this',
+    'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been',
+    'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing',
+    'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until',
+    'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between',
+    'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to',
+    'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again',
+    'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how',
+    'all', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such',
+    'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very',
+    's', 't', 'can', 'will', 'just', 'don', 'should', 'now', 'd', 'll', 'm',
+    'o', 're', 've', 'y', 'ain', 'aren', 'couldn', 'didn', 'doesn', 'hadn',
+    'hasn', 'haven', 'isn', 'ma', 'mightn', 'mustn', 'needn', 'shan',
+    'shouldn', 'wasn', 'weren', 'won', 'wouldn', 'also', 'would', 'could',
+    'may', 'might', 'must', 'shall', 'need', 'dare', 'ought', 'used'
+}
 
-nltk.data.path.append('/tmp/nltk_data')
-
-for pkg in ['stopwords', 'punkt', 'wordnet']:
-    try:
-        nltk.data.find(f'tokenizers/{pkg}')
-    except LookupError:
-        nltk.download(pkg, download_dir='/tmp/nltk_data')
-        
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
-
-# Download semua resource yang diperlukan dengan error handling
-def download_nltk_resources():
-    """Download NLTK resources if not already available"""
-    resources = ['punkt', 'punkt_tab', 'stopwords']
-    for resource in resources:
-        try:
-            nltk.data.find(f'tokenizers/{resource}')
-        except LookupError:
-            print(f"Downloading NLTK resource: {resource}")
-            nltk.download(resource, quiet=True)
-
-# Panggil fungsi download saat module diimport
-download_nltk_resources()
-
-# Download NLTK data (hanya sekali)
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('stopwords')
-
-# Daftar skill umum untuk programming/web development
 COMMON_SKILLS = {
-    # Programming Languages
-    'python', 'java', 'javascript', 'c++', 'c#', 'ruby', 'php', 'swift', 
+    'python', 'java', 'javascript', 'c++', 'c#', 'ruby', 'php', 'swift',
     'kotlin', 'go', 'rust', 'typescript', 'html', 'css', 'sql',
-    
-    # Frameworks & Libraries
     'flask', 'django', 'react', 'angular', 'vue', 'node.js', 'express',
     'spring', 'laravel', 'rails', 'bootstrap', 'jquery', 'pandas', 'numpy',
-    
-    # Databases
     'mysql', 'postgresql', 'mongodb', 'firebase', 'redis', 'oracle',
-    
-    # Tools & Technologies
     'git', 'docker', 'kubernetes', 'aws', 'azure', 'gcp', 'jenkins',
     'jira', 'linux', 'agile', 'scrum', 'rest api', 'graphql',
-    
-    # Data Science & AI
     'machine learning', 'deep learning', 'tensorflow', 'pytorch', 'scikit-learn',
     'nlp', 'computer vision', 'data analysis', 'data visualization',
-    
-    # Soft Skills
     'teamwork', 'leadership', 'communication', 'problem solving',
     'critical thinking', 'project management', 'time management'
 }
 
 def preprocess_text(text):
-    """
-    Preprocess text untuk NLP analysis
-    
-    Steps:
-    1. Lowercase
-    2. Remove punctuation
-    3. Remove numbers
-    4. Remove stopwords
-    5. Tokenization
-    
-    Args:
-        text (str): Input text
-        
-    Returns:
-        str: Cleaned text
-    """
     if not text:
         return ""
-    
-    # 1. Convert to lowercase
+
+    # 1. Lowercase
     text = text.lower()
-    
-    # 2. Remove punctuation dan special characters
+
+    # 2. Hapus punctuation
     text = re.sub(r'[^\w\s]', ' ', text)
-    
-    # 3. Remove numbers
+
+    # 3. Hapus angka
     text = re.sub(r'\d+', ' ', text)
-    
-    # 4. Remove extra whitespace
-    text = ' '.join(text.split())
-    
-    # 5. Tokenization
-    tokens = word_tokenize(text)
-    
-    # 6. Remove stopwords
-    stop_words = set(stopwords.words('english'))
-    tokens = [token for token in tokens if token not in stop_words]
-    
-    # 7. Remove short words (length < 3)
-    tokens = [token for token in tokens if len(token) > 2]
-    
+
+    # 4. Tokenize pakai split biasa — tidak perlu NLTK
+    tokens = text.split()
+
+    # 5. Hapus stopwords
+    tokens = [t for t in tokens if t not in STOPWORDS]
+
+    # 6. Hapus kata pendek
+    tokens = [t for t in tokens if len(t) > 2]
+
     return ' '.join(tokens)
 
 def extract_skills(text):
-    """
-    Extract skills from text based on common skills list
-    
-    Args:
-        text (str): Input text
-        
-    Returns:
-        set: Set of skills found in text
-    """
     if not text:
         return set()
-    
-    # Lowercase the text
     text = text.lower()
-    
     found_skills = set()
-    
-    # Check for each skill in the text
     for skill in COMMON_SKILLS:
-        # Use word boundary to match whole words
         pattern = r'\b' + re.escape(skill) + r'\b'
         if re.search(pattern, text):
             found_skills.add(skill)
-    
     return found_skills
 
 def preprocess_jd_and_resume(jd_text, resume_text):
-    """
-    Preprocess both job description and resume text
-    
-    Args:
-        jd_text (str): Job description text
-        resume_text (str): Resume text
-        
-    Returns:
-        tuple: (processed_jd, processed_resume)
-    """
-    processed_jd = preprocess_text(jd_text)
-    processed_resume = preprocess_text(resume_text)
-    
-    return processed_jd, processed_resume
+    return preprocess_text(jd_text), preprocess_text(resume_text)

@@ -320,23 +320,15 @@
                 Missing keywords shown as badges below.
             </p>
 
-            <!-- Highlighted CV text -->
-            <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-4 text-xs text-zinc-700 leading-relaxed font-mono whitespace-pre-wrap max-h-80 overflow-y-auto"
+            <!-- Highlighted CV text - improved paragraph style -->
+            <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-5 text-sm text-zinc-700 leading-relaxed max-h-96 overflow-y-auto"
                 id="highlightBox">
-                {% for token in result.keyword_highlight.tokens %}
-                {% if token.type == 'found' %}
-                <mark
-                    class="bg-emerald-100 text-emerald-800 border border-emerald-300 rounded px-1 py-0.5 font-semibold not-italic">{{
-                    token.text }}</mark>
-                {% else %}
-                {{ token.text }}
-                {% endif %}
-                {% endfor %}
+                <!-- Content will be populated by JavaScript for better paragraph rendering -->
             </div>
 
             <!-- Missing keyword badges -->
             {% if result.keyword_highlight.missing_keywords %}
-            <div class="mt-4">
+            <div class="mt-5 pt-3 border-t border-zinc-100">
                 <div class="flex items-center gap-1.5 text-xs font-medium text-red-600 mb-2">
                     <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor">
@@ -347,13 +339,98 @@
                 <div class="flex flex-wrap gap-1.5">
                     {% for kw in result.keyword_highlight.missing_keywords %}
                     <span
-                        class="bg-red-50 border border-red-200 text-red-600 text-xs px-2.5 py-1 rounded font-medium capitalize">{{
-                        kw }}</span>
+                        class="bg-red-50 border border-red-200 text-red-600 text-xs px-2.5 py-1 rounded font-medium capitalize">{{ kw }}</span>
                     {% endfor %}
                 </div>
             </div>
             {% endif %}
         </div>
+
+        <script>
+            (function () {
+                // Improved paragraph-based rendering for keyword highlighter
+                const highlightBox = document.getElementById('highlightBox');
+                if (!highlightBox) return;
+
+                // Get the original tokens data from server
+                const tokens = {{ result.keyword_highlight.tokens | tojson }};
+
+                // Build the full text from tokens
+                let fullText = '';
+                for (const token of tokens) {
+                    fullText += token.text;
+                }
+
+                // Split into paragraphs (by newlines, but preserve structure)
+                const paragraphs = fullText.split(/\r?\n/);
+
+                // Function to highlight a single paragraph
+                function highlightParagraph(paragraphText) {
+                    if (!paragraphText.trim()) return '';
+
+                    let result = '';
+                    let lastIndex = 0;
+
+                    // Find all matches in this paragraph
+                    const matches = [];
+                    for (const token of tokens) {
+                        if (token.type === 'found') {
+                            let startIdx = 0;
+                            const searchText = token.text.toLowerCase();
+                            const paraLower = paragraphText.toLowerCase();
+                            let foundIdx = paraLower.indexOf(searchText, startIdx);
+
+                            while (foundIdx !== -1) {
+                                matches.push({
+                                    start: foundIdx,
+                                    end: foundIdx + token.text.length,
+                                    text: token.text
+                                });
+                                startIdx = foundIdx + 1;
+                                foundIdx = paraLower.indexOf(searchText, startIdx);
+                            }
+                        }
+                    }
+
+                    // Sort matches by start position
+                    matches.sort((a, b) => a.start - b.start);
+
+                    // Build highlighted string
+                    let pos = 0;
+                    for (const match of matches) {
+                        if (match.start > pos) {
+                            result += escapeHtml(paragraphText.substring(pos, match.start));
+                        }
+                        result += `<mark class="bg-emerald-100 text-emerald-800 border border-emerald-300 rounded px-1 py-0.5 font-medium not-italic text-sm">${escapeHtml(match.text)}</mark>`;
+                        pos = match.end;
+                    }
+                    if (pos < paragraphText.length) {
+                        result += escapeHtml(paragraphText.substring(pos));
+                    }
+
+                    return result || escapeHtml(paragraphText);
+                }
+
+                function escapeHtml(text) {
+                    const div = document.createElement('div');
+                    div.textContent = text;
+                    return div.innerHTML;
+                }
+
+                // Build the highlighted content
+                let html = '<div class="space-y-3">';
+                for (const para of paragraphs) {
+                    if (para.trim()) {
+                        html += `<p class="leading-relaxed text-sm text-zinc-700">${highlightParagraph(para)}</p>`;
+                    } else if (para === '') {
+                        html += '<div class="h-3"></div>';
+                    }
+                }
+                html += '</div>';
+
+                highlightBox.innerHTML = html;
+            })();
+        </script>
         {% endif %}
 
         <!-- ── STATS ── -->
